@@ -35,7 +35,6 @@ public class BookStoreMenuContributor : IMenuContributor
             )
         );
 
-        //Books
         context.Menu.AddItem(
             new ApplicationMenuItem(
                 "BooksStore",
@@ -55,6 +54,7 @@ public class BookStoreMenuContributor : IMenuContributor
                 ).RequirePermissions(BookStorePermissions.Authors.Default)
             )
         );
+
 
 
 

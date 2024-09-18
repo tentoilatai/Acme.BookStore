@@ -15,13 +15,13 @@ namespace Acme.BookStore.Books
 {
     [Authorize(BookStorePermissions.Books.Default)]
     public class BookAppService :
-    CrudAppService<
-        Book, //The Book entity
-        BookDto, //Used to show books
-        Guid, //Primary key of the book entity
-        PagedAndSortedResultRequestDto, //Used for paging/sorting
-        CreateUpdateBookDto>, //Used to create/update a book
-    IBookAppService //implement the IBookAppService
+        CrudAppService<
+            Book, // The Book entity
+            BookDto, // Used to show books
+            Guid, // Primary key of the book entity
+            PagedAndSortedResultRequestDto, // Used for paging/sorting
+            CreateUpdateBookDto>, // Used to create/update a book
+        IBookAppService // Implement the IBookAppService
     {
         private readonly IAuthorRepository _authorRepository;
 
@@ -40,22 +40,23 @@ namespace Acme.BookStore.Books
 
         public override async Task<BookDto> GetAsync(Guid id)
         {
-            //Get the IQueryable<Book> from the repository
+            // Get the IQueryable<Book> from the repository
             var queryable = await Repository.GetQueryableAsync();
 
-            //Prepare a query to join books and authors
+            // Prepare a query to join books and authors
             var query = from book in queryable
                         join author in await _authorRepository.GetQueryableAsync() on book.AuthorId equals author.Id
                         where book.Id == id
                         select new { book, author };
 
-            //Execute the query and get the book with author
+            // Execute the query and get the book with author
             var queryResult = await AsyncExecuter.FirstOrDefaultAsync(query);
             if (queryResult == null)
             {
                 throw new EntityNotFoundException(typeof(Book), id);
             }
 
+            // Map the result
             var bookDto = ObjectMapper.Map<Book, BookDto>(queryResult.book);
             bookDto.AuthorName = queryResult.author.Name;
             return bookDto;
@@ -63,33 +64,34 @@ namespace Acme.BookStore.Books
 
         public override async Task<PagedResultDto<BookDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
-            //Get the IQueryable<Book> from the repository
+            // Get the IQueryable<Book> from the repository
             var queryable = await Repository.GetQueryableAsync();
 
-            //Prepare a query to join books and authors
+            // Prepare a query to join books and authors
             var query = from book in queryable
                         join author in await _authorRepository.GetQueryableAsync() on book.AuthorId equals author.Id
                         select new { book, author };
 
-            //Paging
+            // Get total count of filtered books
+            var totalCount = await AsyncExecuter.CountAsync(query);
+
+            // Paging
+            // Paging
             query = query
-                .OrderBy(NormalizeSorting(input.Sorting))
+                .OrderBy(x => NormalizeSorting(input.Sorting)) // Explicitly define sorting logic
                 .Skip(input.SkipCount)
                 .Take(input.MaxResultCount);
 
-            //Execute the query and get a list
+            // Execute the query and get the list
             var queryResult = await AsyncExecuter.ToListAsync(query);
 
-            //Convert the query result to a list of BookDto objects
+            // Convert the query result to a list of BookDto objects
             var bookDtos = queryResult.Select(x =>
             {
                 var bookDto = ObjectMapper.Map<Book, BookDto>(x.book);
                 bookDto.AuthorName = x.author.Name;
                 return bookDto;
             }).ToList();
-
-            //Get the total count with another query
-            var totalCount = await Repository.GetCountAsync();
 
             return new PagedResultDto<BookDto>(
                 totalCount,

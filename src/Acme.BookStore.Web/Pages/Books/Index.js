@@ -15,46 +15,49 @@
                 {
                     title: l('Actions'),
                     rowAction: {
-                        items:
-                            [
-                                {
-                                    text: l('Edit'),
-                                    visible: abp.auth.isGranted('BookStore.Books.Edit'), //CHECK for the PERMISSION
-                                    action: function (data) {
-                                        editModal.open({ id: data.record.id });
-                                    }
-                                },
-                                {
-                                    text: l('Delete'),
-                                    visible: abp.auth.isGranted('BookStore.Books.Delete')
-                                    confirmMessage: function (data) {
-                                        return l(
-                                            'BookDeletionConfirmationMessage',
-                                            data.record.name
-                                        );
-                                    },
-                                    action: function (data) {
-                                        acme.bookStore.books.book
-                                            .delete(data.record.id)
-                                            .then(function () {
-                                                abp.notify.info(
-                                                    l('SuccessfullyDeleted')
-                                                );
-                                                dataTable.ajax.reload();
-                                            });
-                                    }
+                        items: [
+                            {
+                                text: l('Edit'),
+                                visible: abp.auth.isGranted('BookStore.Books.Edit'), // Check for the permission
+                                action: function (data) {
+                                    editModal.open({ id: data.record.id });
                                 }
-                            ]
+                            },
+                            {
+                                text: l('Delete'),
+                                visible: abp.auth.isGranted('BookStore.Books.Delete'), // Missing comma fixed
+                                confirmMessage: function (data) {
+                                    return l(
+                                        'BookDeletionConfirmationMessage',
+                                        data.record.name
+                                    );
+                                },
+                                action: function (data) {
+                                    acme.bookStore.books.book
+                                        .delete(data.record.id)
+                                        .then(function () {
+                                            abp.notify.info(
+                                                l('SuccessfullyDeleted')
+                                            );
+                                            dataTable.ajax.reload();
+                                        });
+                                }
+                            }
+                        ]
                     }
                 },
+
                 {
                     title: l('Name'),
                     data: "name"
                 },
+
+                // ADDED the NEW AUTHOR NAME COLUMN
                 {
                     title: l('Author'),
                     data: "authorName"
                 },
+
                 {
                     title: l('Type'),
                     data: "type",
@@ -62,6 +65,7 @@
                         return l('Enum:BookType.' + data);
                     }
                 },
+
                 {
                     title: l('PublishDate'),
                     data: "publishDate",
@@ -72,7 +76,8 @@
                     data: "price"
                 },
                 {
-                    title: l('CreationTime'), data: "creationTime",
+                    title: l('CreationTime'),
+                    data: "creationTime",
                     dataFormat: "datetime"
                 }
             ]
