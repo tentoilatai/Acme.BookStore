@@ -6,12 +6,17 @@
 @model EditModalModel
 @inject IStringLocalizer<BookStoreResource> L
 @{
-    Layout = null;
+Layout = null;
 }
 <abp-dynamic-form abp-model="Book" asp-page="/Books/EditModal">
     <abp-modal>
         <abp-modal-header title="@L["Update"].Value"></abp-modal-header>
         <abp-modal-body>
+            <abp-input asp-for="Book.Id" />
+            <abp-input asp-for="Book.Name" />
+            <abp-input asp-for="Book.Type" />
+            <abp-input asp-for="Book.PublishDate" />
+            <abp-input asp-for="Book.Price" />
             <abp-form-content />
         </abp-modal-body>
         <abp-modal-footer buttons="@(AbpModalButtons.Cancel|AbpModalButtons.Save)"></abp-modal-footer>

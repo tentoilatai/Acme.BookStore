@@ -29,7 +29,7 @@ namespace Acme.BookStore.Books
         {
             //Act
             var result = await _bookAppService.GetListAsync(
-                new PagedAndSortedResultRequestDto()
+                new GetBookListDto()
             );
 
             //Assert
@@ -46,7 +46,7 @@ namespace Acme.BookStore.Books
 
             //Act
             var result = await _bookAppService.CreateAsync(
-                new CreateUpdateBookDto
+                new EditBookViewModel
                 {
                     AuthorId = firstAuthor.Id,
                     Name = "New test book 42",
@@ -67,7 +67,7 @@ namespace Acme.BookStore.Books
             var exception = await Assert.ThrowsAsync<AbpValidationException>(async () =>
             {
                 await _bookAppService.CreateAsync(
-                    new CreateUpdateBookDto
+                    new EditBookViewModel
                     {
                         Name = "",
                         Price = 10,

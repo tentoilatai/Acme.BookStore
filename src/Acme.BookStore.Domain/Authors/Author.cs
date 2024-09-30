@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Volo.Abp.Domain.Entities.Auditing;
 using Volo.Abp;
 
@@ -12,21 +8,23 @@ namespace Acme.BookStore.Authors
     {
         public string Name { get; private set; }
         public DateTime BirthDate { get; set; }
-        public string ShortBio { get; set; }
+        public string? ShortBio { get; set; }
 
-        private Author()
+        private Author(string name, string? shortBio)
         {
+            Name = name;
+            ShortBio = shortBio;
             /* This constructor is for deserialization / ORM purpose */
         }
 
         internal Author(
             Guid id,
             string name,
-            DateTime birthDate,
-            string? shortBio = null)
+            DateTime birthDate, string shortBio1, string? shortBio = null)
             : base(id)
         {
             SetName(name);
+            Name = name;
             BirthDate = birthDate;
             ShortBio = shortBio;
         }

@@ -1,4 +1,4 @@
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -90,13 +90,30 @@ public class BookStoreDbContext :
 
         builder.Entity<Book>(b =>
         {
-            b.ToTable(BookStoreConsts.DbTablePrefix + "Books", BookStoreConsts.DbSchema);
-            b.ConfigureByConvention(); //auto configure for the base class props
-            b.Property(x => x.Name).IsRequired().HasMaxLength(128);
+            b.ToTable(BookStoreConsts.DbTablePrefix + "Books",
+                BookStoreConsts.DbSchema); // Đặt tên bảng với tiền tố và schema
 
-            // ADD THE MAPPING FOR THE RELATION
-            b.HasOne<Author>().WithMany().HasForeignKey(x => x.AuthorId).IsRequired();
+            b.ConfigureByConvention(); // Cấu hình tuân theo quy ước của ABP
 
+            b.Property(x => x.Name)
+                .IsRequired() // Thuộc tính Name bắt buộc
+                .HasMaxLength(128); // Đặt độ dài tối đa của Name
+
+            b.Property(x => x.Price)
+                .IsRequired(); // Thuộc tính Price bắt buộc
+
+            b.Property(x => x.PublishDate)
+                .IsRequired(); // Thuộc tính PublishDate bắt buộc
+
+            b.Property(x => x.Type)
+                .IsRequired(); // Thuộc tính Type bắt buộc
+
+            b.HasIndex(x => x.Name); // Đánh chỉ mục cho thuộc tính Name để tìm kiếm nhanh hơn
+
+            b.HasOne<Author>() // Quan hệ một-nhiều giữa Book và Author
+                .WithMany()
+                .HasForeignKey(x => x.Id) // Liên kết khóa ngoại AuthorId với bảng Author
+                .IsRequired();
         });
 
         builder.Entity<Author>(b =>

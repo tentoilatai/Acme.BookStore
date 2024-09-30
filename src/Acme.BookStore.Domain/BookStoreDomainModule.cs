@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Acme.BookStore.Localization;
 using Acme.BookStore.MultiTenancy;
 using Volo.Abp.Localization;
 using Volo.Abp.Modularity;

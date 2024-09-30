@@ -1,12 +1,11 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Acme.BookStore.Web.Pages.Authors
+namespace Acme.BookStore.Web.Pages.Authors;
+
+public class Index : PageModel
 {
-    public class IndexModel : PageModel
+    public void OnGet()
     {
-        public void OnGet()
-        {
-        }
+        
     }
 }

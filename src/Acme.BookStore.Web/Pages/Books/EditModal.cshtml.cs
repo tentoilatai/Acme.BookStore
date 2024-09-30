@@ -1,13 +1,8 @@
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel;
-using System.Linq;
 using System.Threading.Tasks;
 using Acme.BookStore.Books;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Volo.Abp.AspNetCore.Mvc.UI.Bootstrap.TagHelpers.Form;
 
 namespace Acme.BookStore.Web.Pages.Books;
 
@@ -16,8 +11,6 @@ public class EditModalModel : BookStorePageModel
     [BindProperty]
     public EditBookViewModel Book { get; set; }
 
-    public List<SelectListItem> Authors { get; set; }
-
     private readonly IBookAppService _bookAppService;
 
     public EditModalModel(IBookAppService bookAppService)
@@ -25,24 +18,19 @@ public class EditModalModel : BookStorePageModel
         _bookAppService = bookAppService;
     }
 
-    public async Task OnGetAsync(Guid id)
+    public async Task<IActionResult> OnGetAsync(Guid id)
     {
         var bookDto = await _bookAppService.GetAsync(id);
         Book = ObjectMapper.Map<BookDto, EditBookViewModel>(bookDto);
-
-        var authorLookup = await _bookAppService.GetAuthorLookupAsync();
-        Authors = authorLookup.Items
-            .Select(x => new SelectListItem(x.Name, x.Id.ToString()))
-            .ToList();
+        return Page();  // This fixes the missing return value error
     }
 
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<NoContentResult> OnPostAsync()
     {
         await _bookAppService.UpdateAsync(
-            Book.Id,
-            ObjectMapper.Map<EditBookViewModel, CreateUpdateBookDto>(Book)
+            Book.Id, 
+            ObjectMapper.Map<EditBookViewModel, UpdateBookDto>(Book)
         );
-
         return NoContent();
     }
 
@@ -51,16 +39,12 @@ public class EditModalModel : BookStorePageModel
         [HiddenInput]
         public Guid Id { get; set; }
 
-        [SelectItems(nameof(Authors))]
-        [DisplayName("Author")]
-        public Guid AuthorId { get; set; }
-
         [Required]
-        [StringLength(128)]
+        [StringLength(BookConsts.MaxNameLength)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
-        public BookType Type { get; set; } = BookType.Undefined;
+        public BookConsts.BookType Type { get; set; } = BookConsts.BookType.Undefined;
 
         [Required]
         [DataType(DataType.Date)]

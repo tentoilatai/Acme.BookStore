@@ -38,7 +38,7 @@
                                     action: function (data) {
                                         acme.bookStore.authors.author
                                             .delete(data.record.id)
-                                            .then(function () {
+                                            .then(function() {
                                                 abp.notify.info(
                                                     l('SuccessfullyDeleted')
                                                 );

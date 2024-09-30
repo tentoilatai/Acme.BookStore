@@ -6,16 +6,21 @@ using System.Threading.Tasks;
 
 namespace Acme.BookStore.Books
 {
-    public enum BookType
+    public static class BookConsts
     {
-        Undefined,
-        Adventure,
-        Biography,
-        Dystopia,
-        Fantastic,
-        Horror,
-        Science,
-        ScienceFiction,
-        Poetry
+        public const int MaxNameLength = 128;
+
+        public enum BookType
+        {
+            Undefined,
+            Adventure,
+            Biography,
+            Dystopia,
+            Fantastic,
+            Horror,
+            Science,
+            ScienceFiction,
+            Poetry
+        }
     }
 }

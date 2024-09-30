@@ -1,16 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using static Acme.BookStore.Books.BookConsts;
 
 namespace Acme.BookStore.Books
 {
-    public class CreateUpdateBookDto
+    public class CreateBookDto
     {
         [Required]
-        [StringLength(128)]
+        [StringLength(BookConsts.MaxNameLength)]
         public string Name { get; set; } = string.Empty;
 
         [Required]
@@ -22,7 +19,5 @@ namespace Acme.BookStore.Books
 
         [Required]
         public float Price { get; set; }
-        public Guid AuthorId { get; set; }
-
     }
 }
