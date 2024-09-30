@@ -5,7 +5,7 @@
 namespace Acme.BookStore.Migrations
 {
     /// <inheritdoc />
-    public partial class UpdateBookAuthorRelationship : Migration
+    public partial class Created_Book_Entity : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

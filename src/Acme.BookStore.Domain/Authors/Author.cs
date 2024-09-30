@@ -1,47 +1,45 @@
 ﻿using System;
-using Volo.Abp.Domain.Entities.Auditing;
+using JetBrains.Annotations;
 using Volo.Abp;
+using Volo.Abp.Domain.Entities.Auditing;
 
-namespace Acme.BookStore.Authors
+namespace Acme.BookStore.Authors;
+
+public class Author : FullAuditedAggregateRoot<Guid>
 {
-    public class Author : FullAuditedAggregateRoot<Guid>
+    public string Name { get; private set; }
+    public DateTime BirthDate { get; set; }
+    public string ShortBio { get; set; }
+
+    private Author()
     {
-        public string Name { get; private set; }
-        public DateTime BirthDate { get; set; }
-        public string? ShortBio { get; set; }
+        /* This constructor is for deserialization / ORM purpose */
+    }
 
-        private Author(string name, string? shortBio)
-        {
-            Name = name;
-            ShortBio = shortBio;
-            /* This constructor is for deserialization / ORM purpose */
-        }
+    internal Author(
+        Guid id,
+        string name,
+        DateTime birthDate,
+        string? shortBio = null)
+        : base(id)
+    {
+        SetName(name);
+        BirthDate = birthDate;
+        ShortBio = shortBio;
+    }
 
-        internal Author(
-            Guid id,
-            string name,
-            DateTime birthDate, string shortBio1, string? shortBio = null)
-            : base(id)
-        {
-            SetName(name);
-            Name = name;
-            BirthDate = birthDate;
-            ShortBio = shortBio;
-        }
+    internal Author ChangeName(string name)
+    {
+        SetName(name);
+        return this;
+    }
 
-        internal Author ChangeName(string name)
-        {
-            SetName(name);
-            return this;
-        }
-
-        private void SetName(string name)
-        {
-            Name = Check.NotNullOrWhiteSpace(
-                name,
-                nameof(name),
-                maxLength: AuthorConsts.MaxNameLength
-            );
-        }
+    private void SetName(string name)
+    {
+        Name = Check.NotNullOrWhiteSpace(
+            name, 
+            nameof(name), 
+            maxLength: AuthorConsts.MaxNameLength
+        );
     }
 }

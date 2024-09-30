@@ -86,6 +86,7 @@ public class BookStoreDbContext :
         builder.ConfigureTenantManagement();
         builder.ConfigureBlobStoring();
 
+
         /* Configure your own tables/entities inside here */
 
         builder.Entity<Book>(b =>

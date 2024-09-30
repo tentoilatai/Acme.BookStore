@@ -14,10 +14,9 @@ public class CreateModalModel : BookStorePageModel
 
     private readonly IAuthorAppService _authorAppService;
 
-    public CreateModalModel(IAuthorAppService authorAppService, CreateAuthorViewModel author)
+    public CreateModalModel(IAuthorAppService authorAppService)
     {
         _authorAppService = authorAppService;
-        Author = author;
     }
 
     public void OnGet()
@@ -42,6 +41,7 @@ public class CreateModalModel : BookStorePageModel
         [DataType(DataType.Date)]
         public DateTime BirthDate { get; set; } = DateTime.Now;
 
+        [TextArea]
         public string? ShortBio { get; set; }
     }
 }

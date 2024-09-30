@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Volo.Abp.Application.Dtos;
+﻿using Volo.Abp.Application.Dtos;
 
-namespace Acme.BookStore.Authors
+namespace Acme.BookStore.Authors;
+
+public class GetAuthorListDto : PagedAndSortedResultRequestDto
 {
-    public class GetAuthorListDto : PagedAndSortedResultRequestDto
-    {
-        public string? Filter { get; set; }
-    }
+    public string? Filter { get; set; }
 }

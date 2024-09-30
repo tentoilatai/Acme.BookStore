@@ -12,10 +12,11 @@ namespace Acme.BookStore.Books
         public DateTime PublishDate { get; set; }
         public float Price { get; set; }
 
-        public Book(string name)
+        public Book(Guid id, string name, DateTime publishDate, float price, BookType type)
         {
             Name = name;
-        } 
+        }
+
 
         internal Book(
             Guid id,
@@ -35,6 +36,7 @@ namespace Acme.BookStore.Books
         {
             throw new NotImplementedException();
         }
+
 
         internal Book ChangeName(string name)
         {

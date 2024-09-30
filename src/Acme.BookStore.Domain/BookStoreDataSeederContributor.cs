@@ -31,7 +31,7 @@ public class BookStoreDataSeederContributor
         if (await _bookRepository.GetCountAsync() <= 0)
         {
             await _bookRepository.InsertAsync(
-                entity: new Book
+                new Book
                 {
                     Name = "1984",
                     Type = BookType.Dystopia,
@@ -42,7 +42,7 @@ public class BookStoreDataSeederContributor
             );
 
             await _bookRepository.InsertAsync(
-                entity: new Book
+                new Book
                 {
                     Name = "The Hitchhiker's Guide to the Galaxy",
                     Type = BookType.ScienceFiction,
